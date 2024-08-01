@@ -297,7 +297,7 @@ char const* torrentVerify(tr_session* session, tr_variant* args_in, tr_variant* 
 {
     for (auto* tor : getTorrents(session, args_in))
     {
-        tr_torrentVerify(tor);
+        tr_torrentVerifyRecheck(tor);
         session->rpcNotify(TR_RPC_TORRENT_CHANGED, tor);
     }
 

@@ -44,6 +44,11 @@ auto constexpr VerifyModeKeys = std::array<std::pair<std::string_view, tr_verify
     { "fast", TR_VERIFY_ADDED_FAST },
     { "full", TR_VERIFY_ADDED_FULL },
 } };
+
+auto constexpr VerifyRecheckModeKeys = std::array<std::pair<std::string_view, tr_verify_recheck_mode>, 2>{ {
+    { "fast", TR_VERIFY_RECHECK_FAST },
+    { "full", TR_VERIFY_RECHECK_FULL },
+} };
 } // namespace
 
 namespace libtransmission
@@ -350,6 +355,53 @@ template<>
 void VariantConverter::save<tr_verify_added_mode>(tr_variant* tgt, tr_verify_added_mode const& val)
 {
     for (auto const& [key, value] : VerifyModeKeys)
+    {
+        if (value == val)
+        {
+            tr_variantInitStrView(tgt, key);
+            return;
+        }
+    }
+
+    tr_variantInitInt(tgt, val);
+}
+
+template<>
+std::optional<tr_verify_recheck_mode> VariantConverter::load<tr_verify_recheck_mode>(tr_variant* src)
+{
+    static constexpr auto& Keys = VerifyRecheckModeKeys;
+
+    if (auto val = std::string_view{}; tr_variantGetStrView(src, &val))
+    {
+        auto const needle = tr_strlower(tr_strvStrip(val));
+
+        for (auto const& [name, value] : Keys)
+        {
+            if (name == needle)
+            {
+                return value;
+            }
+        }
+    }
+
+    if (auto val = int64_t{}; tr_variantGetInt(src, &val))
+    {
+        for (auto const& [name, value] : Keys)
+        {
+            if (value == val)
+            {
+                return value;
+            }
+        }
+    }
+
+    return {};
+}
+
+template<>
+void VariantConverter::save<tr_verify_recheck_mode>(tr_variant* tgt, tr_verify_recheck_mode const& val)
+{
+    for (auto const& [key, value] : VerifyRecheckModeKeys)
     {
         if (value == val)
         {

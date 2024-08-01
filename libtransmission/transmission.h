@@ -68,6 +68,12 @@ enum tr_verify_added_mode
     TR_VERIFY_ADDED_FULL = 1
 };
 
+enum tr_verify_recheck_mode
+{
+    TR_VERIFY_RECHECK_FAST = 0,
+    TR_VERIFY_RECHECK_FULL = 1
+};
+
 enum tr_preallocation_mode
 {
     TR_PREALLOCATE_NONE = 0,
@@ -1406,6 +1412,7 @@ void tr_torrentAmountFinished(tr_torrent const* torrent, float* tab, int n_tabs)
  * Queue a torrent for verification.
  */
 void tr_torrentVerify(tr_torrent* torrent);
+void tr_torrentVerifyRecheck(tr_torrent* torrent);
 
 bool tr_torrentHasMetadata(tr_torrent const* tor);
 

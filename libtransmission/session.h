@@ -717,6 +717,11 @@ public:
         return settings_.torrent_added_verify_mode == TR_VERIFY_ADDED_FULL;
     }
 
+    [[nodiscard]] constexpr auto shouldFullyVerifyRecheckTorrents() const noexcept
+    {
+        return settings_.torrent_recheck_verify_mode == TR_VERIFY_RECHECK_FULL;
+    }
+
     [[nodiscard]] constexpr auto shouldDeleteSource() const noexcept
     {
         return settings_.should_delete_source_torrents;

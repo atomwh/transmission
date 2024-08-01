@@ -1829,6 +1829,14 @@ void tr_torrentVerify(tr_torrent* tor)
     tor->session->runInSessionThread(verifyTorrent, tor);
 }
 
+void tr_torrentVerifyRecheck(tr_torrent* tor)
+{
+    if (tor->session->shouldFullyVerifyRecheckTorrents() || !torrent_init_helpers::isNewTorrentASeed(tor))
+    {
+        tr_torrentVerify(tor);
+    }
+}
+
 void tr_torrent::setVerifyState(tr_verify_state state)
 {
     TR_ASSERT(state == TR_VERIFY_NONE || state == TR_VERIFY_WAIT || state == TR_VERIFY_NOW);

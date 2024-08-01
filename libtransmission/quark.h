@@ -377,6 +377,7 @@ enum
     TR_KEY_torrent_complete_sound_enabled,
     TR_KEY_torrent_duplicate,
     TR_KEY_torrent_get,
+    TR_KEY_torrent_recheck_verify_mode,
     TR_KEY_torrent_set,
     TR_KEY_torrent_set_location,
     TR_KEY_torrentCount,
