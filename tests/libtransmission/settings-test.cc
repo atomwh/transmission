@@ -448,3 +448,45 @@ TEST_F(SettingsTest, canSaveVerify)
     EXPECT_EQ("full", val);
     tr_variantClear(&dict);
 }
+
+TEST_F(SettingsTest, canLoadVerifyRecheck)
+{
+    static auto constexpr Key = TR_KEY_torrent_recheck_verify_mode;
+    static auto constexpr ChangedValue = TR_VERIFY_RECHECK_FULL;
+
+    auto settings = std::make_unique<tr_session_settings>();
+    auto const default_value = settings->torrent_recheck_verify_mode;
+    ASSERT_NE(ChangedValue, default_value);
+
+    auto dict = tr_variant{};
+    tr_variantInitDict(&dict, 1);
+    tr_variantDictAddStrView(&dict, Key, "full");
+    settings->load(&dict);
+    tr_variantClear(&dict);
+    EXPECT_EQ(ChangedValue, settings->torrent_recheck_verify_mode);
+
+    settings = std::make_unique<tr_session_settings>();
+    tr_variantInitDict(&dict, 1);
+    tr_variantDictAddInt(&dict, Key, ChangedValue);
+    settings->load(&dict);
+    tr_variantClear(&dict);
+    EXPECT_EQ(ChangedValue, settings->torrent_recheck_verify_mode);
+}
+
+TEST_F(SettingsTest, canSaveVerifyRecheck)
+{
+    static auto constexpr Key = TR_KEY_torrent_recheck_verify_mode;
+    static auto constexpr ChangedValue = TR_VERIFY_RECHECK_FULL;
+
+    auto settings = tr_session_settings{};
+    ASSERT_NE(ChangedValue, settings.torrent_recheck_verify_mode);
+
+    auto dict = tr_variant{};
+    tr_variantInitDict(&dict, 100);
+    settings.torrent_recheck_verify_mode = ChangedValue;
+    settings.save(&dict);
+    auto val = std::string_view{};
+    EXPECT_TRUE(tr_variantDictFindStrView(&dict, Key, &val));
+    EXPECT_EQ("full", val);
+    tr_variantClear(&dict);
+}
