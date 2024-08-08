@@ -2061,6 +2061,16 @@ char const* sessionSet(tr_session* session, tr_variant* args_in, tr_variant* /*a
         tr_sessionSetAntiBruteForceEnabled(session, val);
     }
 
+    if (auto val = bool{}; tr_variantDictFindBool(args_in, TR_KEY_torrent_added_verify_mode, &val))
+    {
+        tr_sessionSetFastTorrentVerify(session, val);
+    }
+
+    if (auto val = bool{}; tr_variantDictFindBool(args_in, TR_KEY_torrent_recheck_verify_mode, &val))
+    {
+        tr_sessionSetFastTorrentRecheck(session, val);
+    }
+
     session->rpcNotify(TR_RPC_SESSION_CHANGED, nullptr);
 
     return nullptr;
@@ -2353,6 +2363,14 @@ void addSessionField(tr_session const* s, tr_variant* d, tr_quark key)
 
     case TR_KEY_session_id:
         tr_variantDictAddStr(d, key, s->sessionId());
+        break;
+
+    case TR_KEY_torrent_added_verify_mode:
+        tr_variantDictAddBool(d, key, !s->shouldFullyVerifyAddedTorrents());
+        break;
+
+    case TR_KEY_torrent_recheck_verify_mode:
+        tr_variantDictAddBool(d, key, !s->shouldFullyVerifyRecheckTorrents());
         break;
     }
 }

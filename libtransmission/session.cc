@@ -1985,6 +1985,21 @@ bool tr_sessionGetAntiBruteForceEnabled(tr_session const* session)
     return session->rpc_server_->isAntiBruteForceEnabled();
 }
 
+void tr_sessionSetFastTorrentVerify(tr_session* session, bool fast)
+{
+    TR_ASSERT(session != nullptr);
+
+    session->settings_.torrent_added_verify_mode = fast ? TR_VERIFY_ADDED_FAST : TR_VERIFY_ADDED_FULL;
+}
+
+void tr_sessionSetFastTorrentRecheck(tr_session* session, bool fast)
+{
+    TR_ASSERT(session != nullptr);
+
+    session->settings_.torrent_recheck_verify_mode = fast ? TR_VERIFY_RECHECK_FAST : TR_VERIFY_RECHECK_FULL;
+    ;
+}
+
 std::vector<tr_torrent*> tr_session::getNextQueuedTorrents(tr_direction dir, size_t num_wanted) const
 {
     TR_ASSERT(tr_isDirection(dir));

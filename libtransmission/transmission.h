@@ -585,6 +585,8 @@ void tr_sessionSetAntiBruteForceThreshold(tr_session* session, int max_bad_reque
 bool tr_sessionGetAntiBruteForceEnabled(tr_session const* session);
 void tr_sessionSetAntiBruteForceEnabled(tr_session* session, bool enabled);
 
+void tr_sessionSetFastTorrentVerify(tr_session* session, bool fast);
+void tr_sessionSetFastTorrentRecheck(tr_session* session, bool fast);
 // ---
 
 /**

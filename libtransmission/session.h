@@ -990,6 +990,8 @@ private:
     friend void tr_sessionSetUTPEnabled(tr_session* session, bool enabled);
     friend void tr_sessionUseAltSpeed(tr_session* session, bool enabled);
     friend void tr_sessionUseAltSpeedTime(tr_session* session, bool enabled);
+    friend void tr_sessionSetFastTorrentVerify(tr_session* session, bool fast);
+    friend void tr_sessionSetFastTorrentRecheck(tr_session* session, bool fast);
 
 public:
     /// constexpr fields
