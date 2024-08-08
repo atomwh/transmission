@@ -219,7 +219,7 @@ enum
 ****
 ***/
 
-static auto constexpr Options = std::array<tr_option, 98>{
+static auto constexpr Options = std::array<tr_option, 102>{
     { { 'a', "add", "Add torrent files by filename or URL", "a", false, nullptr },
       { 970, "alt-speed", "Use the alternate Limits", "as", false, nullptr },
       { 971, "no-alt-speed", "Don't use the alternate Limits", "AS", false, nullptr },
@@ -348,6 +348,10 @@ static auto constexpr Options = std::array<tr_option, 98>{
       { 'y', "lpd", "Enable local peer discovery (LPD)", "y", false, nullptr },
       { 'Y', "no-lpd", "Disable local peer discovery (LPD)", "Y", false, nullptr },
       { 941, "peer-info", "List the current torrent(s)' peers", "pi", false, nullptr },
+      { 720, "fast-verify", "Use fast verify mode", "fv", false, nullptr },
+      { 721, "full-verify", "Use full verify mode", "FV", false, nullptr },
+      { 722, "fast-recheck", "Use fast recheck mode", "fr", false, nullptr },
+      { 723, "full-recheck", "Use full recheck mode", "FR", false, nullptr },
       { 0, nullptr, nullptr, nullptr, false, nullptr } }
 };
 
@@ -447,6 +451,10 @@ static int getOptMode(int val)
     case 991: /* no-start-paused */
     case 992: /* trash-torrent */
     case 993: /* no-trash-torrent */
+    case 720: /* fast verfiy mode */
+    case 721: /* full verify mode */
+    case 722: /* fast recheck mode */
+    case 723: /* full recheck mode */
         return MODE_SESSION_SET;
 
     case 712: /* tracker-remove */
@@ -2760,6 +2768,22 @@ static int processArgs(char const* rpcurl, int argc, char const* const* argv, Co
 
             case 993:
                 tr_variantDictAddBool(args, TR_KEY_trash_original_torrent_files, false);
+                break;
+
+            case 720:
+                tr_variantDictAddBool(args, TR_KEY_torrent_added_verify_mode, true);
+                break;
+
+            case 721:
+                tr_variantDictAddBool(args, TR_KEY_torrent_added_verify_mode, false);
+                break;
+
+            case 722:
+                tr_variantDictAddBool(args, TR_KEY_torrent_recheck_verify_mode, true);
+                break;
+
+            case 723:
+                tr_variantDictAddBool(args, TR_KEY_torrent_recheck_verify_mode, false);
                 break;
 
             default:
