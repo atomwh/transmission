@@ -1835,6 +1835,12 @@ void tr_torrentVerifyRecheck(tr_torrent* tor)
     {
         tr_torrentVerify(tor);
     }
+    else
+    {
+        tor->completion.setHasAll();
+        tor->doneDate = tr_time();
+        tor->recheckCompleteness();
+    }
 }
 
 void tr_torrent::setVerifyState(tr_verify_state state)
